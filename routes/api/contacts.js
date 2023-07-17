@@ -1,13 +1,7 @@
 import express from "express";
 import contactsService from "../../models/contacts.js";
 import { HttpError } from "../../helpers/index.js";
-import Joi from "joi";
-
-const contactsAddSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  phone: Joi.string().required(),
-});
+import contactsAddSchema from "../../SchemaValidation/contactsAddSchema.js";
 
 const contactsRouter = express.Router();
 
