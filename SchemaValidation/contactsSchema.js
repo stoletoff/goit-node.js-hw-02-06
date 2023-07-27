@@ -5,7 +5,11 @@ const contactsAddSchema = Joi.object({
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .required(),
   phone: Joi.string().min(10).max(13).required(),
-  favorite: Joi.boolean,
+  favorite: Joi.boolean().messages({ message: "missing fields favorite" })
 });
 
-export default contactsAddSchema;
+const contactUpdateFavoriteSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});
+
+export default { contactsAddSchema, contactUpdateFavoriteSchema };
