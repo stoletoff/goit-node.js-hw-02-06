@@ -20,10 +20,10 @@ const getAll = async (req, res) => {
 //   res.json(result);
 // };
 
-// const add = async (req, res) => {
-//   const result = await contactsService.addContact(req.body);
-//   res.status(201).json(result);
-// };
+const add = async (req, res) => {
+  const result = await Contact.create(req.body);
+  res.status(201).json(result);
+};
 
 // const updateById = async (req, res) => {
 //   const { contactId } = req.params;
@@ -54,7 +54,7 @@ const getAll = async (req, res) => {
 export default {
   getAll: cntrlWrapper(getAll),
   // getById: cntrlWrapper(getById),
-  // add: cntrlWrapper(add),
+  add: cntrlWrapper(add),
   // updateById: cntrlWrapper(updateById),
   // deleteById: cntrlWrapper(deleteById),
 };
