@@ -1,5 +1,5 @@
 import { HttpError } from "../helpers/index.js";
-const validateBody = (schema) => {
+const validateBody = (contactsAddSchema) => {
   const func = (req, res, next) => {
     const { error } = contactsAddSchema.validate(req.body);
     if (error) {
