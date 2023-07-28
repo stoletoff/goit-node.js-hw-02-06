@@ -3,7 +3,7 @@ const app = express();
 
 import logger from "morgan";
 import cors from "cors";
-import contactsRouter from "./routes/api/contacts.js";
+import contactsRouter from "./routes/api/contacts-router.js";
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
