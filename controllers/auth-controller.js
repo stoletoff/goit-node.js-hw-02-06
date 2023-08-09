@@ -1,4 +1,4 @@
-import User from "../models/users.js";
+import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import { HttpError } from "../helpers/index.js";
 import { cntrlWrapper } from "../decorators/index.js";
@@ -9,10 +9,10 @@ dotenv.config();
 
 const { JWT_SECRET } = process.env;
 
-console.log(JWT_SECRET);
+// console.log(JWT_SECRET);
 
-const signup = async (req, res) => {
-  const { email, password } = req.body;
+const register = async (req, res) => {
+  const { name, email, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
     throw HttpError(409, "Email in use");
@@ -20,12 +20,15 @@ const signup = async (req, res) => {
   const hashPassword = await bcrypt.hash(password, 10);
   const newUser = await User.create({ ...req.body, password: hashPassword });
   res.status(201).json({
-    name: newUser.name,
-    email: newUser.email,
+    user: {
+      email: newUser.email,
+      name: newUser.name,
+      subscription: newUser.subscription,
+    },
   });
 };
 
-const singin = async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
@@ -42,9 +45,35 @@ const singin = async (req, res) => {
 
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
   await User.findByIdAndUpdate(user._id, { token });
-  res.json({
+  res.status(201).json({
     token,
+    user: {
+      email: user.email,
+      subscription: user.subscription,
+    },
   });
 };
 
-export default { signup: cntrlWrapper(signup), singin: cntrlWrapper(singin) };
+const getCurrent = async (req, res) => {
+  const { email, name, subscription } = req.user;
+  res.status(200).json({
+    name,
+    email,
+    subscription,
+  });
+};
+
+const logout = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { token: "" });
+  res.status(204).json({
+    message: "Logout success",
+  });
+};
+
+export default {
+  register: cntrlWrapper(register),
+  login: cntrlWrapper(login),
+  getCurrent: cntrlWrapper(getCurrent),
+  logout: cntrlWrapper(logout),
+};
