@@ -35,24 +35,4 @@ const User = model("user", userSchema);
 
 export default User;
 
-// const userSchema = new Schema(
-//   {
-//     name: {
-//       type: String,
-//       required: true,
-//     },
-//     email: {
-//       type: String,
-//       match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-//       unique: true,
-//       required: true,
-//     },
-//     password: {
-//       type: String,
-//       minlenth: 6,
 
-//       required: true,
-//     },
-//   },
-//   { versionKey: false, timestamps: true }
-// );
